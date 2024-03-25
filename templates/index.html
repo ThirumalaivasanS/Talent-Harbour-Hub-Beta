@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>TalentHarbourHub</title>
+  <link rel="stylesheet" type="css" href="/static/style.css" />
+  <link rel="stylesheet" type="text/css" href="static\style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .greeting-container {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      height: 80vh;
+      overflow: hidden;
+    }
+
+    .greeting-message {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1.5s ease-out 0.5s forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .footer {
+      text-align: center;
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+    }
+
+    .chatbot-toggler {
+      width: 80px;
+      height: 80px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      position: relative;
+      display: inline-block;
+    }
+
+    #jarvis-checkbox {
+      display: none;
+    }
+
+    .chatbot-toggler::before {
+      content: '';
+      display: block;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .chatbot-toggler:hover::before {
+      transform: scale(1.1);
+    }
+
+    #flying-image {
+      background-color: none;
+      width: 150px;
+      height: 100px;
+      top: -35px;
+      left: -67px;
+      right: 200px;
+    }
+
+    .material-symbols-rounded,
+    .material-symbols-outlined,
+    .chatbot-name {
+      color:#07ed57;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-right: -50px;
+      transform: translate(-50%, -50%);
+      font-size: 15px;
+    }
+
+    /* Spinner styles */
+    .spinner {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .spinner .spinner-icon {
+      border: 5px solid rgb(255, 255, 255);
+      border-top: 5px solid #07ed57;
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Additional style for hiding the buttons initially */
+    .forms {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Spinner -->
+  <div class="spinner" id="spinner">
+    <div class="spinner-icon"></div>
+  </div>
+
+  <header>
+    <nav>
+      <div class="logo">
+        <img src="static/TALT-removebg-preview.png">
+      </div>
+      <ul>
+        <li><a href="https://pozent.com/"><i class="fa-regular fa-address-book"></i> Contact us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="greeting-container">
+    <h2 class="greeting-message">Welcome to Talent Harbour Hub! <br>
+      <span class="auto-typed" style="color:#07ed57"> </span>
+    </h2>
+  </div>
+
+  <div class="footer">
+    <!-- Chatbot toggler with image acting as a button -->
+    <button class="chatbot-toggler">
+      <img id="flying-image" src="static\bot1-ezgif.com-gif-maker (1).gif" alt="Chatbot Toggler Image"><br>
+      <h3>Chatbot</h3>
+    </button>
+  </div>
+  <div class="chatbot">
+    <header>
+      <h2>Chatbot</h2>
+      <span class="close-btn material-symbols-outlined">close</span>
+    </header>
+    <ul class="chatbox">
+      <li class="chat incoming">
+        <span class="material-symbols-outlined" style="color:#07ed57;">smart_toy</span>
+        <p class="res" oninput="handleInput(this.value)">Hi there 👋<br>How can I help you today?<br>A.Fetch Resume <br>B. Document validation</b></p>
+      </li>
+    </ul>
+    <div id="file-upload-container" class="file-display-container">
+      <span class="file-display-label">Uploaded File:</span>
+      <span id="file-display"></span>
+      <span class="close-icon" onclick="removeUploadedFile()">x</span>
+    </div>
+    <div class="chat-input">
+      <textarea id="user-input" placeholder="Ask..." spellcheck="false" required></textarea>
+      <form id="fetchForm" action="/process" method="post" enctype="multipart/form-data" class="forms" onsubmit="startSpinner(); hideshow('a');">
+        <label for="file" class="upload-button" id="upload-label">
+          <input type="file" id="file" style="display: none;" name="file" accept=".txt" required onchange="handleFileUpload(event)">
+          <i class="fa-solid fa-upload"></i>
+        </label>
+        <div style="display: none" id="file-display-container">
+          <span id="file-display"></span>
+          <span class="close-icon" style="display: none" onclick="removeUploadedFile()">X</span>
+        </div>
+        <button id="fetch-btn" class="process-button" type="submit">
+          Fetch
+        </button>
+      </form>
+      <form id="fetchCpForm" action="/process_cp" method="post" enctype="multipart/form-data" class="forms" onsubmit="startSpinner(); hideshow('b');">
+        <div style="display: none" id="file-display-container">
+          <span id="file-display"></span>
+        </div>
+        <button id="fetch-btn-cp" class="process-button" type="submit">
+          Fetch
+        </button>
+      </form>
+      <span id="send-btn" class="material-symbols-rounded">send</span>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+  <script src="/static/jav.js"></script>
+
+  <script>
+    var typed = new Typed(".auto-typed", {
+      strings: ["A Product of Pozent .", "Where we made Recruitment Easy .", "Jarvis is ready to assist you .", "Hello Recruiters !!!"],
+      typeSpeed: 150,
+      backspeed: 150,
+      onComplete: function (self) {
+        document.getElementById('flying-image').style.animation ='flyToChatbot 2s forwards';
+        document.getElementById('chatbotImage').style.animation ='appear 2s 2s forwards';
+      },
+      loop: true
+    });
+
+    function startSpinner() {
+      document.getElementById("spinner").style.display = "block";
+    }
+
+    function handleInput(input) {
+      var currentStage = conversation_tree[input];
+
+      if (currentStage) {
+        updateChatbox(currentStage[0]);
+
+        if (currentStage[1]) {
+          hideshow(currentStage[1]);
+        }
+      } else {
+        updateChatbox("I'm sorry, I didn't understand that. Please choose a valid option.");
+      }
+    }
+
+    function updateChatbox(message) {
+      var chatbox = document.querySelector('.chatbox');
+      var newMessage = document.createElement('li');
+      newMessage.className = 'chat incoming';
+      newMessage.innerHTML = '<span class="material-symbols-outlined" style="color:#07ed57;">smart_toy</span>' +
+        '<p class="res" oninput="handleInput(this.value)">' + message + '</p>';
+      chatbox.appendChild(newMessage);
+    }
+
+    function hideshow(buttonType) {
+      if (buttonType === 'a') {
+        document.getElementById('fetchForm').style.display = 'block';
+        document.getElementById('fetchCpForm').style.display = 'none';
+      } else if (buttonType === 'b') {
+        document.getElementById('fetchForm').style.display = 'none';
+        document.getElementById('fetchCpForm').style.display = 'block';
+      } else {
+        document.getElementById('fetchForm').style.display = 'none';
+        document.getElementById('fetchCpForm').style.display = 'none';
+      }
+    }
+    function handleFileUpload(event) {
+  const fileInput = event.target;
+  const fileDisplay = document.getElementById('file-display');
+  const fileDisplayContainer = document.getElementById('file-display-container');
+  const closeIcon = document.querySelector('.close-icon');
+
+  // Update the file display container in the UI
+  fileDisplay.textContent = fileInput.files[0].name;
+  fileDisplayContainer.style.display = 'flex'; // Show the file display container
+
+  // Show the close icon
+  closeIcon.style.display = 'inline-block';
+}
+
+function removeUploadedFile() {
+  const fileDisplay = document.getElementById('file-display');
+  const fileInput = document.getElementById('file');
+  const fileDisplayContainer = document.getElementById('file-display-container');
+  const closeIcon = document.querySelector('.close-icon');
+  const uploadLabel = document.getElementById("upload-label");
+
+  // Clear the displayed file name
+  fileDisplay.textContent = '';
+
+  // Reset the file input (clear selected file)
+  fileInput.value = null;
+
+  // Hide the file display container
+  fileDisplayContainer.style.display = 'none';
+
+  // Hide the close icon
+  closeIcon.style.display = 'none';
+
+}
+
+  </script>
+</body>
+
+</html>

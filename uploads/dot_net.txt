@@ -1,0 +1,30 @@
+Job Description
+We are seeking a .NET developer responsible for building .NET applications using {{Insert specific .NET languages and technologies here that are relevant to your project; indicate whether the focus is on front-end, back-end, or both}}. Your primary responsibility will be to design and develop these layers of our applications, and to coordinate with the rest of the team working on different layers of the infrastructure. A commitment to collaborative problem solving, sophisticated design, and quality product is essential.
+
+Responsibilities
+Translate application storyboards and use cases into functional applications
+Design, build, and maintain efficient, reusable, and reliable code
+Integrate data storage solutions {{may include databases, key-value stores, blob stores, etc.}}
+Ensure the best possible performance, quality, and responsiveness of applications
+Identify bottlenecks and bugs, and devise solutions to mitigate and address these issues
+Help maintain code quality, organization, and automatization
+{{Add other responsibilities here that are relevant}}
+Skills
+Strong knowledge of .NET web framework {{you may specify particular versions based on your requirements}}
+Proficient in {{C# and/or VB.NET}}, with a good knowledge of their ecosystems
+Familiarity with the Mono framework {{if needed}}
+Strong understanding of object-oriented programming
+Skill for writing reusable libraries
+Familiar with various design and architectural patterns
+Knowledge of concurrency patterns
+Familiarity with Microsoft SQL Server {{if deemed necessary for the project needs}}
+Experience with popular web application frameworks
+Familiarity with Windows Presentation Framework {{if needed}}
+Knack for writing clean, readable, and easily maintainable code
+Understanding of fundamental design principles for building a scalable application
+Experience creating database schemas that represent and support business processes
+Basic understanding of Common Language Runtime (CLR), its limitations, weaknesses, and workarounds
+Experience implementing automated testing platforms and unit tests
+Proficient understanding of code versioning tools {{such as Git, SVN, and Mercurial}}
+{{Make sure to mention any frameworks, libraries, or any other technology relevant to your project}}
+{{List education level or certification you require}}

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <style>
+    *{
+      margin:0px;
+      padding:0px;
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      background-color: #323946;
+      color: white;
+    }
+    body h1{
+      align-items: center;
+      display:flex;
+      justify-content: center;
+    }
+
+    .container {
+      position:fixed;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+   
+}
+
+.table-scroll-container {
+  width: 800px;
+  height: 400px; 
+  overflow: auto;
+  border-radius: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table {
+  width: 100%; 
+  table-layout: fixed; 
+  border-collapse: collapse;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+
+
+    td,
+    th {
+      width:100%;/* You can adjust this percentage based on your design */
+      box-sizing: border-box;
+      padding: 15px; /* Adjusted padding for content spacing */
+      text-align: left;
+    }
+
+    th {
+      color: #0097b2;
+      background-color: #1f242d;
+    }
+
+    tr:hover {
+      background-color: #0097b2;
+      color:white;
+      transition: 1s;
+    }
+
+    button {
+      background-color: #1f242d;
+      border-radius: 10px;
+      color: #0097b2;
+      border: none;
+      padding: 10px 20px; /* Adjusted padding for button */
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px; /* Adjusted font size for button */
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: white;
+      color: #0097b2;
+    }
+
+    .filter-btn {
+      background-color: white;
+      color: #0097b2;
+      border-radius: 10px;
+    }
+
+    .down:link {
+      text-decoration: none;
+    }
+    .down img{
+      color:#0097b2;
+    }
+  .dropdown-button{
+    align-items:center;
+    justify-content: center;
+    display:flex;
+    margin-left:1005px;
+    margin-top: 0px;
+    color:antiquewhite;
+    padding:15px;
+    font-size:10px;
+    background-color:#0097b2;
+    border-radius:10%;
+}
+h1 span{
+  margin-left: 10px;
+}
+.dropdown{
+    position:relative;
+    display:inline-block;
+    align-items: center;
+    justify-content: center;
+    width:3px;
+}
+.dropdown-button:hover{
+   background-color:color;
+   color:#0097b2;
+   transition: 1.2s;
+}
+.dropdown-content {
+    text-transform: uppercase;
+    display: none;
+    position: absolute;
+    background-color: none;
+    min-width: 160px;
+    margin-left:1005px;
+    /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
+    z-index: 1;
+  }
+
+  .dropdown-content a {
+    color:#0097b2;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+.dropdown-content a:hover {
+color:white;
+  background-color:#0097b2;
+transition: 1s;}
+
+
+.dropdown:hover .dropdown-content {display: block;
+transition: 1.2s;}
+
+  </style>
+</head>
+
+<style>
+  .DropOp{
+    border-radius: 500px;
+    border-style: groove;
+  }
+  .DropOp:hover {
+
+    background-color: grey;
+    color: beige;
+  }
+</style>
+<body>
+  <h1>Ranking  <span style="color:#0097b2;"> Res</span>umes</h1>
+  <div class="dropdown">
+    <button class="dropdown-button">Job ID</button>
+<div class="dropdown-content">
+  <form  id="job-form" class="forms" action="/DB" method="post">
+    <select name="job_id" id="job-select">
+      <option class="DropOp" value="1">Job_01</option>
+      <option class="DropOp"  value="2">Job_02</option>
+    </select>
+    <button type="submit">Submit</button>
+  </form>
+
+   
+</div>
+</div>
+  <div class="container">
+    <div class="resume-dashboard">
+      <div id="resume-results" class="table-scroll-container">
+        {% if ranking_result %}
+
+        <table border="1">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th><button id="filter-btn">Percentage</button></th>
+            <th>Download</th>
+            <!-- Add more th elements for additional columns -->
+          </tr>
+          {% for row in ranking_result %}
+          <tr class="resume-row" data-similarity="{{ row.Similarity }}">
+            <td>{{ row.Name }}</td>
+            <td>{{row.Email}}</td>
+            <td>{{ row.Similarity*100}}</td>
+            <td style="display: flex; justify-content: center; align-items: center;">
+              <a class="down" href="/download/{{ row.Link }}" target="_blank">
+                <img src="{{ url_for('static', filename='download.jpg') }}" alt="Download" style="height: 30px; width: 30px;">
+              </a>
+            </td>
+            <!-- Add more td elements for additional columns -->
+          </tr>
+          {% endfor %}
+        </table>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Selecting filter button
+      var filterBtn = document.getElementById("filter-btn");
+      var select = null; // Variable to hold the dropdown menu
+
+      // Adding click event listener
+      filterBtn.addEventListener("click", function () {
+        // If select already exists, show it
+        if (select) {
+          select.style.display = "inline-block";
+        } else {
+          // Creating an array of filter options
+          var options = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+          // Creating a dropdown menu for filter options
+          select = document.createElement("select");
+          // Populating dropdown menu with options
+          options.forEach(function (option) {
+            var optionElement = document.createElement("option");
+            optionElement.value = option;
+            optionElement.textContent = option + "%";
+            select.appendChild(optionElement);
+          });
+          // Adding change event listener to the dropdown menu
+          select.addEventListener("change", function () {
+            // Getting selected filter percentage
+            var filterValue = parseInt(select.value);
+            // Selecting table rows
+            var rows = document.querySelectorAll(".resume-row");
+            // Looping through rows
+            rows.forEach(function (row) {
+              // Getting similarity value from data attribute
+              var similarity = parseFloat(row.getAttribute("data-similarity"));
+              // If similarity is greater than or equal to filter value, show the row, otherwise hide it
+              if (similarity * 100 >= filterValue) {
+                row.style.display = "table-row";
+              } else {
+                row.style.display = "none";
+              }
+            });
+          });
+          // Appending dropdown menu to the filter button
+          filterBtn.appendChild(select);
+        }
+      });
+    });
+  </script>
+  <script>
+    document.getElementById('submit-btn').addEventListener('click', function() {
+      var jobSelect = document.getElementById('job-select');
+      var selectedJobId = jobSelect.options[jobSelect.selectedIndex].value;
+      var form = document.getElementById('job-form');
+      var formData = new FormData(form);
+      formData.append('job_id', selectedJobId);
+
+      // Make an AJAX request to send the form data to the backend
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/DB', true);
+      xhr.onload = function() {
+          // Handle the response from the backend
+          console.log(xhr.responseText);
+      };
+      xhr.send(formData);
+  });
+  </script>
+</body>
+
+</html>

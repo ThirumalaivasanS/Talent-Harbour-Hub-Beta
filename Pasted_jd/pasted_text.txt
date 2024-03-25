@@ -1,0 +1,19 @@
+Our growing company is searching for experienced candidates for the position of SQL developer. Thank you in advance for taking a look at the list of responsibilities and qualifications. We look forward to reviewing your resume.
+Responsibilities for SQL developer
+Develop new software programs and applications
+Plan phases of the software development life cycle (SDLC)
+Remove code script from company Web site and/or related Web applications as necessary
+Build BI-Based Reports
+Produce technical documentation, design and test systems changes accurately to insure system efficiency, integrity, productivity and maintainability
+Provide post-implementation support and develop future, iterative system releases
+Assist Analysts and Developers with the design, prototyping and preparation of software specifications and interaction designs for product features
+Develop robust, high quality software meeting the requirements of the agreed specifications and complying with the development team standards and procedures
+Assist with the preparation of test plans for the purpose of quality assurance testing software deliverables
+Establish and maintain good working relationships both within the development team and the wider organization
+Qualifications for SQL developer
+Knowledge of an Agile-related development process
+Will be using SSAS, SSIS & SSRS
+Passionate about Software Development and building design-led software
+A thorough understanding of Tables, Stored Procedures, Indexes, Transactions, Views
+Knowledge on Data integrity and database design is a plus
+Ability to adapt to a rapidly changing dynamic environment
